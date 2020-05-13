@@ -2,7 +2,7 @@ from time import sleep
 from selenium import webdriver
 from termcolor import colored
 from application.utils.constants import FULL_WINDOW_NAV_ITEMS_X_PATH, \
-    MOBILE_SCREEN_NAV_ITEMS_X_PATH, MOBILE_MENU_X_PATH
+    MOBILE_SCREEN_NAV_ITEMS_X_PATH, MOBILE_MENU_NAV_BAR_X_PATH
 
 
 class HomepageTest:
@@ -39,6 +39,7 @@ class HomepageTest:
                               colored('Homepage not OK', 'cyan')
             print(console_message)
             print(colored(str(e), 'red'))
+
             return False
 
     def nav_bar_content_testing(self) -> bool:
@@ -114,7 +115,7 @@ class HomepageTest:
         """
         try:
             self.set_window_screen()
-            self.click_on_element(MOBILE_MENU_X_PATH)
+            self.click_on_element(MOBILE_MENU_NAV_BAR_X_PATH)
             for element in MOBILE_SCREEN_NAV_ITEMS_X_PATH:
                 self.click_on_element(element)
             console_message = colored('[success] ', 'green',
@@ -149,7 +150,7 @@ class HomepageTest:
         """
         try:
             sleep(2)
-            self._browser.set_window_size(400, 862)
+            self._browser.set_window_size(768, 1024)
             console_message = colored('[success] ', 'green',
                                       attrs=['bold']) + colored(
                 '[Custom window size OK!]', 'cyan')
