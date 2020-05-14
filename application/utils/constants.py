@@ -26,6 +26,10 @@ LOGIN_PASSWORD_FIELD_X_PATH = '/html/body/div/div/div/div/div/div/div/form' \
                               '/div[2]/input '
 LOGIN_SUBMIT_BUTTON_X_PATH = '/html/body/div/div/div/div/div/div/div/form' \
                              '/button '
+DASHBOARD_UPPER_RIGHT_MENU_X_PATH = '/html/body/div[1]/div[2]/div[' \
+                                    '1]/div/div/div[2]/div/button '
+LOGOUT_LINK_X_PATH = '/html/body/div[1]/div[2]/div[1]/div/div/div[' \
+                     '2]/div/div/a[3] '
 LOGIN_PAGE_X_PATHS = dict(email_field=LOGIN_EMAIL_FIELD_X_PATH,
                           password_field=LOGIN_PASSWORD_FIELD_X_PATH,
                           submit_button=LOGIN_SUBMIT_BUTTON_X_PATH)

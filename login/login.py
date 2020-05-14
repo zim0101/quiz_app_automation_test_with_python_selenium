@@ -23,19 +23,14 @@ class LoginTest:
         also be done.
     """
 
-    def __init__(self, url: str, email: str, login_page_x_paths: dict,
-                 password: str, dashboard_url: str):
+    def __init__(self, url: str, login_page_x_paths: dict, dashboard_url: str):
         """
         :param url: Web application's login url
-        :param email: user email
-        :param password: user password
+        :param login_page_x_paths: form and button XPaths
         :param dashboard_url: dashboard url after login redirection
-
         """
 
         self.url = url
-        self.email = email
-        self.password = password
         self.login_page_x_paths = login_page_x_paths
         self.dashboard_url = dashboard_url
         self._browser = webdriver.Chrome()
@@ -56,11 +51,13 @@ class LoginTest:
 
             raise
 
-    def login_attempt_with_correct_credential(self):
+    def login_attempt(self, email: str, password: str):
         """
         Attempt a login with given correct credentials
+        :param email: given user email
+        :param password: given user password
         """
-        self.login(self.email, self.password)
+        self.login(email, password)
         console_print('success', '[Login is working!]')
 
     def secondary_login_attempt_in_new_tab(self):
@@ -166,6 +163,23 @@ class LoginTest:
                 ElementNotInteractableException,
                 NoSuchElementException) as error:
             console_print('failed', '[Credential submit failed!]')
+            console_print('failed', str(error))
+            self._browser.quit()
+            print()
+
+            raise
+
+    def logout(self, menu: str, logout_link: str):
+        try:
+            self._browser.find_element_by_xpath(menu).click()
+            self._browser.find_element_by_xpath(logout_link).click()
+            console_print('success', '[Logout successful!]') if \
+                self._browser.current_url == self.url else \
+                console_print('failed', '[Logout failed!]')
+        except (
+                ElementNotInteractableException,
+                NoSuchElementException) as error:
+            console_print('failed', '[Logout failed!]')
             console_print('failed', str(error))
             self._browser.quit()
             print()

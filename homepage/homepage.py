@@ -1,3 +1,5 @@
+"""Homepage Automation testing"""
+
 from time import sleep
 from selenium import webdriver
 from termcolor import colored
@@ -7,7 +9,8 @@ from application.utils.constants import FULL_WINDOW_NAV_ITEMS_X_PATH, \
 
 class HomepageTest:
     """
-        Automate homepage visiting process
+        Automate homepage visiting and navigation process both in fullscreen
+        and medium screen
     """
 
     def __init__(self, url: str, nav_bar_elements: list):
