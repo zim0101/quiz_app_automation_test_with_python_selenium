@@ -1,22 +1,34 @@
+"""
+    LoginTest module will test:
+    1. Successful login
+    2. Failed login with wrong credential
+    3. Secondary Login attempt in a new tab after a successful login.
+
+    If users redirect to the dashboard url or any given url, then login attempt
+    will be successful
+
+"""
+
 from time import sleep
 from selenium import webdriver
-from application.utils.helpers import console_print
 from selenium.common.exceptions import ElementNotInteractableException, \
     NoSuchElementException, JavascriptException, TimeoutException
+from application.utils.helpers import console_print
 
 
 class LoginTest:
+    """
+        LoginTest class test successful and failed login attempt as well as try
+        to login after a successful login in a new tab. Log out testing can
+        also be done.
+    """
 
-    def __init__(self, url: str, email: str, password: str,
-                 email_field_x_path: str, password_field_x_path: str,
-                 submit_button_x_path: str, dashboard_url: str):
+    def __init__(self, url: str, email: str, login_page_x_paths: dict,
+                 password: str, dashboard_url: str):
         """
         :param url: Web application's login url
         :param email: user email
         :param password: user password
-        :param email_field_x_path: email field XPath
-        :param password_field_x_path: password field XPath
-        :param submit_button_x_path: submit button XPath
         :param dashboard_url: dashboard url after login redirection
 
         """
@@ -24,9 +36,7 @@ class LoginTest:
         self.url = url
         self.email = email
         self.password = password
-        self.email_field_x_path = email_field_x_path
-        self.password_field_x_path = password_field_x_path
-        self.submit_button_x_path = submit_button_x_path
+        self.login_page_x_paths = login_page_x_paths
         self.dashboard_url = dashboard_url
         self._browser = webdriver.Chrome()
 
@@ -39,9 +49,9 @@ class LoginTest:
             self._browser.get(self.url)
             console_print('success', '[Login page OK!]')
             sleep(2)
-        except TimeoutException as e:
+        except TimeoutException as error:
             console_print('failed', '[Login page not OK!]')
-            console_print('failed', str(e))
+            console_print('failed', str(error))
             self._browser.quit()
 
             raise
@@ -74,9 +84,9 @@ class LoginTest:
             sleep(1)
             self._browser.switch_to.window(self._browser.window_handles[1])
             console_print('success', '[New tab opened!]')
-        except JavascriptException as e:
+        except JavascriptException as error:
             console_print('failed', '[New tab open failed!]')
-            console_print('failed', str(e))
+            console_print('failed', str(error))
             self._browser.quit()
 
             raise
@@ -114,11 +124,13 @@ class LoginTest:
         """
         try:
             email_field = self._browser.find_element_by_xpath(
-                self.email_field_x_path)
+                self.login_page_x_paths['email_field'])
             email_field.send_keys(email)
-        except (ElementNotInteractableException, NoSuchElementException) as e:
+        except (
+                ElementNotInteractableException,
+                NoSuchElementException) as error:
             console_print('failed', '[Email input failed!]')
-            console_print('failed', str(e))
+            console_print('failed', str(error))
             self._browser.quit()
 
             raise
@@ -130,11 +142,13 @@ class LoginTest:
         """
         try:
             password_field = self._browser.find_element_by_xpath(
-                self.password_field_x_path)
+                self.login_page_x_paths['password_field'])
             password_field.send_keys(password)
-        except (ElementNotInteractableException, NoSuchElementException) as e:
+        except (
+                ElementNotInteractableException,
+                NoSuchElementException) as error:
             console_print('failed', '[Password input failed!]')
-            console_print('failed', str(e))
+            console_print('failed', str(error))
             self._browser.quit()
 
             raise
@@ -146,11 +160,14 @@ class LoginTest:
         """
         try:
             submit_button = self._browser.find_element_by_xpath(
-                self.submit_button_x_path)
+                self.login_page_x_paths['submit_button'])
             submit_button.click()
-        except (ElementNotInteractableException, NoSuchElementException) as e:
+        except (
+                ElementNotInteractableException,
+                NoSuchElementException) as error:
             console_print('failed', '[Credential submit failed!]')
-            console_print('failed', str(e))
+            console_print('failed', str(error))
             self._browser.quit()
+            print()
 
             raise
