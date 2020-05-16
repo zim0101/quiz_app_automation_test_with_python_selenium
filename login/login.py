@@ -58,7 +58,10 @@ class LoginTest:
         :param password: given user password
         """
         self.login(email, password)
-        console_print('success', '[Login is working!]')
+        redirected_to_dashboard: bool = self.current_url_is_dashboard_url()
+        console_print('success', '[Login is working!]') if \
+            redirected_to_dashboard else \
+            console_print('failed', '[Wrong credential, Login failed!]')
 
     def secondary_login_attempt_in_new_tab(self):
         """
@@ -68,9 +71,11 @@ class LoginTest:
         """
         self.open_and_switch_to_new_tab()
         self.visit_login_page()
-        self.current_url_is_dashboard_url()
+        redirected_to_dashboard: bool = self.current_url_is_dashboard_url()
         console_print('success', '[Secondary login attempt redirected to '
-                                 'dashboard!]')
+                                 'dashboard!]') if \
+            redirected_to_dashboard else \
+            console_print('failed', '[New tab redirection failed!]')
 
     def open_and_switch_to_new_tab(self):
         """
@@ -170,6 +175,11 @@ class LoginTest:
             raise
 
     def logout(self, menu: str, logout_link: str):
+        """
+        Logout from dashboard
+        :param menu: Upper right menu in dashboard
+        :param logout_link: logout link
+        """
         try:
             self._browser.find_element_by_xpath(menu).click()
             self._browser.find_element_by_xpath(logout_link).click()

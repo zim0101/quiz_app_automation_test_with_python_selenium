@@ -1,6 +1,5 @@
-"""
-    Settings
-"""
+"""Application Settings"""
+
 import os
 from dotenv import load_dotenv
 
@@ -11,5 +10,5 @@ ADMIN_PASSWORD = os.getenv("ADMIN_PASSWORD")
 USER_EMAIL = os.getenv("USER_EMAIL")
 USER_PASSWORD = os.getenv("USER_PASSWORD")
 
-WRONG_EMAIL = 'xyz@xyz.com'
-WRONG_PASSWORD = 'xyz'
+WRONG_EMAIL = os.getenv("WRONG_EMAIL")
+WRONG_PASSWORD = os.getenv("WRONG_PASSWORD")
