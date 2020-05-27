@@ -1,4 +1,5 @@
 HOMEPAGE_URL = "https://querkiz.itech-theme.com/"
 LOGIN_URL = "https://querkiz.itech-theme.com/signin"
+REGISTRATION_URL = "https://querkiz.itech-theme.com/signup"
 ADMIN_DASHBOARD = "https://querkiz.itech-theme.com/admin"
 USER_DASHBOARD = "https://querkiz.itech-theme.com/home"

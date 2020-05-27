@@ -18,7 +18,7 @@ class HomepageTest:
         :param url: url of the web application
         :param nav_bar_elements: nav bar elements of the web application
         """
-        self._browser = webdriver.Chrome()
+        self._browser = webdriver.Firefox()
         self._browser.maximize_window()
         self.url = url
         self.nav_bar_elements = nav_bar_elements
