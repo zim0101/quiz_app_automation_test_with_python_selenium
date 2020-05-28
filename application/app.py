@@ -8,7 +8,8 @@ from registration.registration import RegistrationTest
 from application.utils.constants import (
     HOMEPAGE_NAV_BAR, LOGIN_PAGE_X_PATHS, REGISTRATION_PAGE_X_PATHS,
     REGISTRATION_ERROR_MESSAGES, REGISTRATION_SUCCESS_MESSAGE,
-    DASHBOARD_UPPER_RIGHT_MENU_X_PATH, LOGOUT_LINK_X_PATH
+    DASHBOARD_UPPER_RIGHT_MENU_X_PATH, LOGOUT_LINK_X_PATH,
+    INVALID_EMAIL_MESSAGE
 )
 from settings import (
     ADMIN_EMAIL, ADMIN_PASSWORD, WRONG_EMAIL, WRONG_PASSWORD,
@@ -22,7 +23,7 @@ from settings import (
 )
 
 if __name__ == '__main__':
-    # Homepage Testing
+    # # Homepage Testing
     # homepage = HomepageTest(HOMEPAGE_URL, HOMEPAGE_NAV_BAR)
     # homepage.visit_homepage()
     # homepage.nav_bar_content_testing()
@@ -52,14 +53,14 @@ if __name__ == '__main__':
     )
 
     # Failed registration with invalid email
-    # registration_test.check_registration_validation_message(
-    #     REGISTRATION_USER_USERNAME,
-    #     INVALID_EMAIL,
-    #     REGISTRATION_USER_PASSWORD,
-    #     REGISTRATION_USER_PASSWORD,
-    #     REGISTRATION_USER_PHONE,
-    #     REGISTRATION_ERROR_MESSAGES
-    # )
+    registration_test.registration_with_invalid_email(
+        REGISTRATION_USER_USERNAME,
+        INVALID_EMAIL,
+        REGISTRATION_USER_PASSWORD,
+        REGISTRATION_USER_PASSWORD,
+        REGISTRATION_USER_PHONE,
+        INVALID_EMAIL_MESSAGE
+    )
 
     # Failed registration with invalid password
     registration_test.check_registration_validation_message(
@@ -81,12 +82,12 @@ if __name__ == '__main__':
         REGISTRATION_ERROR_MESSAGES
     )
 
-    # # Successful registration test
-    # registration_test.check_registration_success_message(
-    #     REGISTRATION_USER_USERNAME,
-    #     REGISTRATION_USER_EMAIL,
-    #     REGISTRATION_USER_PASSWORD,
-    #     REGISTRATION_USER_PASSWORD,
-    #     REGISTRATION_USER_PHONE,
-    #     REGISTRATION_SUCCESS_MESSAGE
-    # )
+    # Successful registration test
+    registration_test.check_registration_success_message(
+        REGISTRATION_USER_USERNAME,
+        REGISTRATION_USER_EMAIL,
+        REGISTRATION_USER_PASSWORD,
+        REGISTRATION_USER_PASSWORD,
+        REGISTRATION_USER_PHONE,
+        LOGIN_URL
+    )

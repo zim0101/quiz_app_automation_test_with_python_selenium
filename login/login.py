@@ -33,7 +33,7 @@ class LoginTest:
         self.url = url
         self.login_page_x_paths = login_page_x_paths
         self.dashboard_url = dashboard_url
-        self._browser = webdriver.Chrome()
+        self._browser = webdriver.Firefox()
 
     def visit_login_page(self):
         """

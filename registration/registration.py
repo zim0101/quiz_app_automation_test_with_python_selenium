@@ -1,8 +1,10 @@
 """
     Registration module tasks:
-    1. Register with correct credentials
-    2. Register with wrong credentials
-    3. Validation messages
+    1. Register with correct information
+    2. Register with wrong information
+    3. Check validation messages
+    4. Check success message
+    5. Test with invalid email
 """
 from time import sleep
 from selenium import webdriver
@@ -61,15 +63,61 @@ class RegistrationTest:
                                            password: str,
                                            confirm_password: str,
                                            phone: str,
-                                           success_message: list) -> bool:
+                                           login_url: str) -> bool:
         try:
+            self._browser.refresh()
             self.register(username, email, password, confirm_password, phone)
             sleep(2)
-            message = self._browser.find_element_by_xpath(
-                self.registration_x_paths['success_message_box']).text
-            if message is not success_message:
-                console_print('failed', '[Validation message didnt match!]')
+            current_url = self._browser.current_url
+
+            if current_url != login_url:
+                console_print('failed', '[Current url is not login url, '
+                                        'registration failed]')
                 return False
+            console_print('success', '[Current url is login url, '
+                                     'registration successful]')
+            return True
+        except (
+                ElementNotInteractableException,
+                NoSuchElementException) as error:
+            console_print('failed', str(error))
+            self._browser.quit()
+
+            return False
+
+    def registration_with_invalid_email(self, username: str, email: str,
+                                        password: str, confirm_password: str,
+                                        phone: str, invalid_email_message):
+        """
+        This method will try to register with a given invalid email where
+        other information will be valid. And we will check the HTML validation
+        message is shown or not. We will return True if it does otherwise, we
+        will return False.
+        :param username:
+        :param email:
+        :param password:
+        :param confirm_password:
+        :param phone:
+        :param invalid_email_message:
+        :return:
+        """
+        try:
+            self._browser.refresh()
+            self.register(username, email, password, confirm_password, phone)
+            sleep(1)
+            email_validation_message = self._browser.find_element_by_xpath(
+                self.registration_x_paths['email_field']) \
+                .get_attribute('validationMessage')
+            sleep(1)
+            print(email_validation_message)
+            if email_validation_message != invalid_email_message:
+                console_print('failed', '[Invalid email validation message '
+                                        'didnt match!]')
+                return False
+            console_print('success', '[Invalid email validation message '
+                                     'matched!]')
+
+            return True
         except (
                 ElementNotInteractableException,
                 NoSuchElementException) as error:
@@ -203,7 +251,7 @@ class RegistrationTest:
         """
         try:
             phone_field = self._browser.find_element_by_xpath(
-                self.registration_x_paths['confirm_password_field'])
+                self.registration_x_paths['phone_field'])
             phone_field.send_keys(phone)
         except (
                 ElementNotInteractableException,

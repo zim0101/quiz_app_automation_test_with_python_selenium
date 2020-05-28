@@ -73,4 +73,5 @@ REGISTRATION_ERROR_MESSAGES = [
 
 REGISTRATION_SUCCESS_MESSAGE = "We have just sent a verification link on " \
                                "Email ."
+INVALID_EMAIL_MESSAGE = "Please enter an email address."
 
