@@ -10,13 +10,13 @@
 """
 
 from time import sleep
-from selenium import webdriver
 from selenium.common.exceptions import ElementNotInteractableException, \
     NoSuchElementException, JavascriptException, TimeoutException
 from application.utils.helpers import console_print
+from application.selenium_base import SeleniumBase
 
 
-class LoginTest:
+class LoginTest(SeleniumBase):
     """
         LoginTest class test successful and failed login attempt as well as try
         to login after a successful login in a new tab. Log out testing can
@@ -30,10 +30,10 @@ class LoginTest:
         :param dashboard_url: dashboard url after login redirection
         """
 
+        super().__init__()
         self.url = url
         self.login_page_x_paths = login_page_x_paths
         self.dashboard_url = dashboard_url
-        self._browser = webdriver.Firefox()
 
     def visit_login_page(self):
         """
@@ -41,13 +41,13 @@ class LoginTest:
         :return: bool
         """
         try:
-            self._browser.get(self.url)
+            self.browser.get(self.url)
             console_print('success', '[Login page OK!]')
             sleep(2)
         except TimeoutException as error:
             console_print('failed', '[Login page not OK!]')
             console_print('failed', str(error))
-            self._browser.quit()
+            self.browser.quit()
 
             raise
 
@@ -82,14 +82,14 @@ class LoginTest:
         Execute javascript to open new tab and then switch to the new tab
         """
         try:
-            self._browser.execute_script("window.open('');")
+            self.browser.execute_script("window.open('');")
             sleep(1)
-            self._browser.switch_to.window(self._browser.window_handles[1])
+            self.browser.switch_to.window(self.browser.window_handles[1])
             console_print('success', '[New tab opened!]')
         except JavascriptException as error:
             console_print('failed', '[New tab open failed!]')
             console_print('failed', str(error))
-            self._browser.quit()
+            self.browser.quit()
 
             raise
 
@@ -99,7 +99,7 @@ class LoginTest:
         otherwise return false
         :return: bool
         """
-        current_url = self._browser.current_url
+        current_url = self.browser.current_url
         if current_url == self.dashboard_url:
             console_print('success', '[Current url is dashboard url!]')
 
@@ -125,7 +125,7 @@ class LoginTest:
         :param email: user email
         """
         try:
-            email_field = self._browser.find_element_by_xpath(
+            email_field = self.browser.find_element_by_xpath(
                 self.login_page_x_paths['email_field'])
             email_field.send_keys(email)
         except (
@@ -133,7 +133,7 @@ class LoginTest:
                 NoSuchElementException) as error:
             console_print('failed', '[Email input failed!]')
             console_print('failed', str(error))
-            self._browser.quit()
+            self.browser.quit()
 
             raise
 
@@ -143,7 +143,7 @@ class LoginTest:
         :param password: user password
         """
         try:
-            password_field = self._browser.find_element_by_xpath(
+            password_field = self.browser.find_element_by_xpath(
                 self.login_page_x_paths['password_field'])
             password_field.send_keys(password)
         except (
@@ -151,7 +151,7 @@ class LoginTest:
                 NoSuchElementException) as error:
             console_print('failed', '[Password input failed!]')
             console_print('failed', str(error))
-            self._browser.quit()
+            self.browser.quit()
 
             raise
 
@@ -161,7 +161,7 @@ class LoginTest:
         the login form
         """
         try:
-            submit_button = self._browser.find_element_by_xpath(
+            submit_button = self.browser.find_element_by_xpath(
                 self.login_page_x_paths['submit_button'])
             submit_button.click()
         except (
@@ -169,7 +169,7 @@ class LoginTest:
                 NoSuchElementException) as error:
             console_print('failed', '[Credential submit failed!]')
             console_print('failed', str(error))
-            self._browser.quit()
+            self.browser.quit()
             print()
 
             raise
@@ -181,17 +181,17 @@ class LoginTest:
         :param logout_link: logout link
         """
         try:
-            self._browser.find_element_by_xpath(menu).click()
-            self._browser.find_element_by_xpath(logout_link).click()
+            self.browser.find_element_by_xpath(menu).click()
+            self.browser.find_element_by_xpath(logout_link).click()
             console_print('success', '[Logout successful!]') if \
-                self._browser.current_url == self.url else \
+                self.browser.current_url == self.url else \
                 console_print('failed', '[Logout failed!]')
         except (
                 ElementNotInteractableException,
                 NoSuchElementException) as error:
             console_print('failed', '[Logout failed!]')
             console_print('failed', str(error))
-            self._browser.quit()
+            self.browser.quit()
             print()
 
             raise
